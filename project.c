@@ -12,6 +12,8 @@ typedef struct node {
 	struct node *next;
 } music;
 
+int main();
+
 void add_music();
 
 void search_music();
@@ -265,7 +267,7 @@ music *search_music_name(char *name, music *list_head) {
 	printf("번호. 제목 - 가수 - 앨범\n");
 	int i = 1;
 	while(tmp2 != NULL) {
-		printf("%d. %s - %s - %s", i, tmp2->name, tmp2->singer, tmp2->album);
+		printf("%d. %s - %s - %s\n", i, tmp2->name, tmp2->singer, tmp2->album);
 		tmp2 = tmp2->next;
 		i++;
 	}
@@ -446,6 +448,7 @@ void search_music() {
 }
 
 void my_chart() {
+	printf("MY 차트\n");
 	music *list_head, *tmp;
 	list_head = read_file();
 	int count = 0;
@@ -455,8 +458,8 @@ void my_chart() {
 		tmp = list_head;
 		while(tmp != NULL) {
 			if(tmp->listen == i) {
-				printf("%s %s %s %d\n", tmp->name, tmp->singer, tmp->album, tmp->listen);
-				count++; break;
+				printf("%d. %s - %s - %s, 들은 횟수 : %d\n", count+1, tmp->name, tmp->singer, tmp->album, tmp->listen);
+				count++;
 			}
 			tmp = tmp->next;
 		}
@@ -467,27 +470,29 @@ void my_chart() {
 
 int main() {
 	int menu;
-	printf("================\n");
-	printf("0. 프로그램 종료\n");
-	printf("1. 노래 추가\n");
-	printf("2. 노래 검색\n");
-	printf("3. MY 차트\n");
-	printf("================\n");
-	printf("선택 : ");
-	scanf("%d", &menu); getchar();
-
-	switch(menu) {
-		case 0:
-			return 0;
-		case 1:
-			add_music();
-			break;
-		case 2:
-			search_music();	
-			break;
-		case 3:
-			my_chart();
-			break;
+	while(1) {
+		printf("================\n");
+		printf("0. 프로그램 종료\n");
+		printf("1. 노래 추가\n");
+		printf("2. 노래 검색\n");
+		printf("3. MY 차트\n");
+		printf("================\n");
+		printf("선택 : ");
+		scanf("%d", &menu); getchar();
+	
+		switch(menu) {
+			case 0:
+				return 0;
+			case 1:
+				add_music();
+				break;
+			case 2:
+				search_music();	
+				break;
+			case 3:
+				my_chart();
+				break;
+		}
 	}
 	return 0;
 }
