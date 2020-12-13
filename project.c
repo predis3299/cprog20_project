@@ -48,8 +48,8 @@ void add_music() {
 	char name[SIZE], singer[SIZE], album[SIZE];
 	int title;
 	FILE *fp = NULL;
-	fp = fopen("musics.dat", "a");
 
+	fp = fopen("musics.dat", "a");
 	while(1) {
 		printf("================\n");
 		printf("추가할 노래의 정보를 입력하세요\n");
@@ -84,11 +84,11 @@ music *search_target(music *list_head, char *name, char *singer, char *album) {
 }
 
 void save_nodes(music *list_head) {
+	FILE *fp = NULL;
 	music *tmp;
 	tmp = list_head;
-	FILE *fp = NULL;
-	fp = fopen("musics.dat", "w");
 
+	fp = fopen("musics.dat", "w");
 	while(tmp != NULL) {
 		fprintf(fp, "%s %s %s %d %d %d\n", tmp->name, tmp->singer, tmp->album, tmp->title, tmp->listen, tmp->heart);
 		tmp = tmp->next;
@@ -109,6 +109,7 @@ music *read_file() {
 		list_head = new_node;
 	}
 	fclose(fp);
+
 	return list_head;
 }
 
@@ -173,6 +174,7 @@ void remove_music(char *name, char *singer, char *album) {
 	tmp = list_head;
 	prenode = tmp;
 	tmp = tmp->next;
+
 	while(tmp != NULL) {
 		if((strcmp(tmp->name, name) == 0) && (strcmp(tmp->singer, singer) == 0) && (strcmp(tmp->album, album) == 0)) {
 			rmnode = tmp;
@@ -190,10 +192,10 @@ void remove_music(char *name, char *singer, char *album) {
 }
 
 void select_music(music *list_head) {
-	int menu;
 	music *tmp;
 	tmp = list_head;
 
+	int menu;
 	printf("취소하려면 0을 입력하세요\n");
 	printf("================\n");
 	printf("노래 선택 : ");
@@ -254,6 +256,7 @@ void search_music_key(char *key, music *head, music *(*pf)(char*, music *)) {
 
 music *search_music_name(char *name, music *list_head) {
 	music *tmp, *tmp2, *prenode, *rmnode;
+
 	while(strcmp(list_head->name, name) != 0) {
 		rmnode = list_head;
 		list_head = list_head->next;
@@ -263,10 +266,12 @@ music *search_music_name(char *name, music *list_head) {
 			return NULL;
 		}
 	}
+
 	tmp = list_head;
 	tmp2 = list_head;
 	prenode = tmp;
 	tmp = tmp->next;
+
 	while(tmp != NULL) {
 		if(strcmp(tmp->name, name) != 0) {
 			rmnode = tmp;
@@ -278,6 +283,7 @@ music *search_music_name(char *name, music *list_head) {
 		prenode = tmp;
 		tmp = tmp->next;
 	}
+
 	printf("노래 제목으로 검색\n");
 	printf("번호. 제목 - 가수 - 앨범\n");
 	int i = 1;
@@ -286,11 +292,13 @@ music *search_music_name(char *name, music *list_head) {
 		tmp2 = tmp2->next;
 		i++;
 	}
+
 	return list_head;
 }
 
 music *search_music_singer(char *singer, music *list_head) {
 	music *tmp, *tmp2, *prenode, *rmnode;
+
 	while(strcmp(list_head->singer, singer) != 0) {
 		rmnode = list_head;
 		list_head = list_head->next;
@@ -300,11 +308,12 @@ music *search_music_singer(char *singer, music *list_head) {
 			return NULL;
 		}
 	}
-	if(list_head == NULL) printf("noooo!\n");
+
 	tmp = list_head;
 	tmp2 = list_head;
 	prenode = tmp;
 	tmp = tmp->next;
+
 	while(tmp != NULL) {
 		if(strcmp(tmp->singer, singer) != 0) {
 			rmnode = tmp;
@@ -316,6 +325,7 @@ music *search_music_singer(char *singer, music *list_head) {
 		prenode = tmp;
 		tmp = tmp->next;
 	}
+
 	printf("가수 이름으로 검색\n");
 	printf("번호. 제목 - 가수 - 앨범\n");
 	int i = 1;
@@ -324,11 +334,13 @@ music *search_music_singer(char *singer, music *list_head) {
 		tmp2 = tmp2->next;
 		i++;
 	}
+
 	return list_head;
 }
 
 music *search_music_album(char *album, music *list_head) {
 	music *tmp, *tmp2, *prenode, *rmnode;
+
 	while(strcmp(list_head->album, album) != 0) {
 		rmnode = list_head;
 		list_head = list_head->next;
@@ -338,6 +350,7 @@ music *search_music_album(char *album, music *list_head) {
 			return NULL;
 		}
 	}
+
 	tmp = list_head;
 	tmp2 = list_head;
 	prenode = tmp;
@@ -353,6 +366,7 @@ music *search_music_album(char *album, music *list_head) {
 		prenode = tmp;
 		tmp = tmp->next;
 	}
+
 	printf("앨범 이름으로 검색\n");
 	printf("번호. 제목 - 가수 - 앨범\n");
 	int i = 1;
@@ -361,11 +375,13 @@ music *search_music_album(char *album, music *list_head) {
 		tmp2 = tmp2->next;
 		i++;
 	}
+
 	return list_head;
 }
 
 music *search_music_heart(char *heart, music *list_head) {
 	music *tmp, *tmp2, *prenode, *rmnode;
+
 	while(list_head->heart != 1) {
 		rmnode = list_head;
 		list_head = list_head->next;
@@ -375,10 +391,12 @@ music *search_music_heart(char *heart, music *list_head) {
 			return NULL;
 		}
 	}
+
 	tmp = list_head;
 	tmp2 = list_head;
 	prenode = tmp;
 	tmp = tmp->next;
+
 	while(tmp != NULL) {
 		if(tmp->heart != 1) {
 			rmnode = tmp;
@@ -390,6 +408,7 @@ music *search_music_heart(char *heart, music *list_head) {
 		prenode = tmp;
 		tmp = tmp->next;
 	}
+
 	printf("하트 누른 노래 검색\n");
 	printf("번호. 제목 - 가수 - 앨범\n");
 	int i = 1;
@@ -398,11 +417,13 @@ music *search_music_heart(char *heart, music *list_head) {
 		tmp2 = tmp2->next;
 		i++;
 	}
+
 	return list_head;
 }
 
 void print_nodes(music *list_head) {
 	music *tmp = list_head;
+
 	while(tmp != NULL) {
 		printf("%s %s %s %d %d %d\n", tmp->name, tmp->singer, tmp->album, tmp->title, tmp->listen, tmp->heart);
 		tmp = tmp->next;
@@ -410,7 +431,6 @@ void print_nodes(music *list_head) {
 }
 
 void search_music() {
-	char key[SIZE];
 	FILE *fp = NULL;
 	music *new_node, *tmp_node;
 	music *list_head = NULL;
@@ -436,6 +456,7 @@ void search_music() {
 	fclose(fp);
 
 	int menu;
+	char key[SIZE];
 	printf("================\n");
 	printf("0. 취소\n");
 	printf("1. 제목으로 검색\n");
@@ -480,10 +501,10 @@ void search_music() {
 
 void my_chart() {
 	printf("MY 차트\n");
-	music *list_head, *tmp;
-	list_head = read_file();
 	int count = 0;
 	int i = 100;
+	music *list_head, *tmp;
+	list_head = read_file();
 
 	while(count < 10) {
 		tmp = list_head;
@@ -496,11 +517,13 @@ void my_chart() {
 		}
 		i--;
 	}
+
 	release_memory(list_head);
 }
 
 int main() {
 	int menu;
+
 	while(1) {
 		printf("================\n");
 		printf("0. 프로그램 종료\n");
