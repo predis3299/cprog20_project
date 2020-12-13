@@ -12,8 +12,6 @@ typedef struct node {
 	struct node *next;
 } music;
 
-int main();
-
 void add_music();
 
 void search_music();
@@ -196,11 +194,19 @@ void select_music(music *list_head) {
 	music *tmp;
 	tmp = list_head;
 
+	printf("취소하려면 0을 입력하세요\n");
 	printf("================\n");
 	printf("노래 선택 : ");
 	scanf("%d", &menu); getchar();
 
-	for(int n = 0; n < menu-1; n++) tmp = tmp->next;
+	if(menu == 0) return;
+	for(int n = 0; n < menu-1; n++) {
+		tmp = tmp->next;
+		if(tmp == NULL) {
+			printf("wrong!\n");
+			return;
+		}
+	}
 
 	printf("================\n");
 	printf("선택된 노래 : %s - %s - %s\n", tmp->name, tmp->singer, tmp->album);
@@ -213,6 +219,7 @@ void select_music(music *list_head) {
 	release_memory(list_head);
 
 	printf("기능 선택\n");
+	printf("0. 취소\n");
 	printf("1. 하트 누르기/취소하기\n");
 	printf("2. 들은 횟수 카운트\n");
 	printf("3. 노래 삭제\n");
@@ -221,6 +228,8 @@ void select_music(music *list_head) {
 	scanf("%d", &menu); getchar();
 
 	switch(menu) {
+		case 0:
+			break;
 		case 1:
 			press_heart(name, singer, album);
 			break;
@@ -231,6 +240,7 @@ void select_music(music *list_head) {
 			remove_music(name, singer, album);
 			break;
 		default:
+			printf("wrong!\n");
 			break;
 	}
 }
@@ -238,6 +248,7 @@ void select_music(music *list_head) {
 void search_music_key(char *key, music *head, music *(*pf)(char*, music *)) {
 	music *list_head;
 	list_head = pf(key, head);
+	if(list_head == NULL) return;
 	select_music(list_head);
 }
 
@@ -247,6 +258,10 @@ music *search_music_name(char *name, music *list_head) {
 		rmnode = list_head;
 		list_head = list_head->next;
 		free(rmnode);
+		if(list_head == NULL) {
+			printf("찾는 노래가 없습니다\n");
+			return NULL;
+		}
 	}
 	tmp = list_head;
 	tmp2 = list_head;
@@ -280,7 +295,12 @@ music *search_music_singer(char *singer, music *list_head) {
 		rmnode = list_head;
 		list_head = list_head->next;
 		free(rmnode);
+		if(list_head == NULL) {
+			printf("찾는 노래가 없습니다\n");
+			return NULL;
+		}
 	}
+	if(list_head == NULL) printf("noooo!\n");
 	tmp = list_head;
 	tmp2 = list_head;
 	prenode = tmp;
@@ -313,6 +333,10 @@ music *search_music_album(char *album, music *list_head) {
 		rmnode = list_head;
 		list_head = list_head->next;
 		free(rmnode);
+		if(list_head == NULL) {
+			printf("찾는 노래가 없습니다\n");
+			return NULL;
+		}
 	}
 	tmp = list_head;
 	tmp2 = list_head;
@@ -346,6 +370,10 @@ music *search_music_heart(char *heart, music *list_head) {
 		rmnode = list_head;
 		list_head = list_head->next;
 		free(rmnode);
+		if(list_head == NULL) {
+			printf("찾는 노래가 없습니다\n");
+			return NULL;
+		}
 	}
 	tmp = list_head;
 	tmp2 = list_head;
@@ -409,6 +437,7 @@ void search_music() {
 
 	int menu;
 	printf("================\n");
+	printf("0. 취소\n");
 	printf("1. 제목으로 검색\n");
 	printf("2. 가수 이름으로 검색\n");
 	printf("3. 앨범 이름으로 검색\n");
@@ -418,6 +447,8 @@ void search_music() {
 	scanf("%d", &menu); getchar();
 
 	switch(menu) {
+		case 0:
+			break;
 		case 1:
 			printf("제목 : ");
 			scanf("%s", key); getchar();
@@ -492,6 +523,9 @@ int main() {
 			case 3:
 				my_chart();
 				break;
+			default:
+				printf("wrong!\n");
+				continue;
 		}
 	}
 	return 0;
